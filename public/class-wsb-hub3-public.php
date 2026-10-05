@@ -513,7 +513,7 @@ class Wsb_Hub3_Public {
 	function get_reference($order_id, &$changes = null){
 		$order = wc_get_order( $order_id );
 		$date  = Wsb_Hub3_Validator::reference_date( get_option( 'wsb_hub3_receiver_reference_date', 'ddmmyyyy' ), strtotime( $order->get_date_created() ) );
-		return esc_html( Wsb_Hub3_Validator::build_reference(
+		$html = esc_html( Wsb_Hub3_Validator::build_reference(
 			Wsb_Hub3_Validator::receiver_model(),
 			get_option( 'wsb_hub3_receiver_reference_prefix' ),
 			get_option( 'wsb_hub3_receiver_reference', 'orderid' ),
@@ -522,6 +522,9 @@ class Wsb_Hub3_Public {
 			get_option( 'wsb_hub3_receiver_reference_sufix' ),
 			$changes
 		) );
+
+		/* da se može filtrirati prema potrebi */
+        return apply_filters('wsb_hub3_receiver_reference', $html, $order_id);
 	}
 
 	/**
